@@ -1,5 +1,11 @@
 Options -MultiViews
 RewriteEngine On
+
+# Proxy Retell API calls to avoid CORS issues (mirrors the Vite dev server proxy)
+RewriteCond %{REQUEST_URI} ^/api/retell/
+RewriteRule ^api/retell/(.*)$ https://api.retellai.com/$1 [P,L]
+
+# SPA fallback — serve index.html for all non-file, non-directory routes
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.html [QSA,L]
